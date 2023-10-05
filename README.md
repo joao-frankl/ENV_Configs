@@ -24,25 +24,4 @@ alias cat='batcat'
 ```sh
 alias npp='/mnt/c/Program\ Files/Notepad++/Notepad++.exe'
 ```
-```markdown
-| Task           | Time required | Assigned to   | Current Status | Finished                                           | 
-|----------------|---------------|---------------|----------------|----------------------------------------------------|
-| Calendar Cache | > 5 hours     |               | in progress    | - [x] ok?                                          |
-| Object Cache   | > 5 hours     |               | in progress    | [x] item1<br/>[ ] item2                            |
-| Object Cache   | > 5 hours     |               | in progress    | <ul><li>- [x] item1</li><li>- [ ] item2</li></ul>  |
-| Object Cache   | > 5 hours     |               | in progress    | <ul><li>[x] item1</li><li>[ ] item2</li></ul>      |
-```
 
-
-| Task           | Time required | Assigned to   | Current Status | Finished | 
-|----------------|---------------|---------------|----------------|-----------|
-| Calendar Cache | > 5 hours  |  | in progress | - [x] ok?
-| Object Cache   | > 5 hours  |  | in progress | [x] item1<br/>[ ] item2
-| Object Cache   | > 5 hours  |  | in progress | <ul><li>- [x] item1</li><li>- [ ] item2</li></ul>
-| Object Cache   | > 5 hours  |  | in progress | <ul><li>[x] item1</li><li>[ ] item2</li></ul>
-
-
-| demo                                              | demo |
-| ------------------------------------------------- | ---- |
-| <input type="checkbox" disabled checked /> works  |      |
-| <input type="checkbox" disabled /> works here too |      |
