@@ -1,4 +1,11 @@
-#My PS1 and some "alias" for .bahsrc!
+## Table of Contents
+
+- [PS1](#PS1)
+- [settings.json](#settings.json)
+- [Usage](#usage)
+- [Disclaimer](#disclaimer)
+
+##PS1 and some "alias" for .bahsrc!
 
 - [ ] PS1
  ```sh
@@ -25,7 +32,7 @@ alias cat='batcat'
 alias npp='/mnt/c/Program\ Files/Notepad++/Notepad++.exe'
 ```
 
-#My settings.json for windows terminal
+##settings.json for windows terminal
 
 ```json
 {
