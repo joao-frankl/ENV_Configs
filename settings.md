@@ -1,3 +1,5 @@
+settings.json
+
 ```json
 {
     "$help": "https://aka.ms/terminal-documentation",
