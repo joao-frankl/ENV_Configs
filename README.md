@@ -34,7 +34,7 @@ alias npp='/mnt/c/Program\ Files/Notepad++/Notepad++.exe'
 ```
 
 
-## settings.json 
+## settings
 ### for windows terminal
 
 ```json
