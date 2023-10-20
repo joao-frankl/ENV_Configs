@@ -5,7 +5,7 @@
 - [Usage](#usage)
 - [Disclaimer](#disclaimer)
 
-##PS1 and some "alias" for .bahsrc!
+## PS1 and some "alias" for .bahsrc!
 
 - [ ] PS1
  ```sh
@@ -32,7 +32,7 @@ alias cat='batcat'
 alias npp='/mnt/c/Program\ Files/Notepad++/Notepad++.exe'
 ```
 
-##settings.json for windows terminal
+## settings.json for windows terminal
 
 ```json
 {
