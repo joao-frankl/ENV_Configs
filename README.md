@@ -1,14 +1,13 @@
 ## Table of Contents
 
-- [PS1](#PS1)
+- [Bashrc](#Bashrc)
 - [settings.json](#settings.json)
-- [Usage](#usage)
+- [Powershell](#Powershell)
 - [Disclaimer](#disclaimer)
 
-## PS1
+## Bashrc
 ### and some "alias" for .bahsrc!
 
-- [ ] PS1
  ```sh
 PS1='\n\n<\#> \[\e[1m\][\[\e[0;4m\]\u\[\e[0;1m\]]\[\e[0;2m\] - \[\e[0;1m\][\[\e[0m\]\w\[\e[1m\]]\[\e[0;2m\] - \[\e[0;1m\]|\[\e[0;97;2m\]$(ip route get 1.1.1.1 | awk -F"src " '"'"'NR == 1{ split($2, a," ");print a[1]}'"'"')\[\e[0;1m\]|\n\[\e[2m\]>_\[\e[0m\]'
 ```
@@ -407,4 +406,111 @@ alias npp='/mnt/c/Program\ Files/Notepad++/Notepad++.exe'
     "useAcrylicInTabRow": true,
     "windowingBehavior": "useAnyExisting"
 }
+```
+
+##Powershell
+###Microsoft.PowerShekk_profile.ps1 settings for powershell
+
+ ```ps1
+## Map PSDrives to other registry hives
+if (!(Test-Path HKCR:)) {
+    $null = New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
+    $null = New-PSDrive -Name HKU -PSProvider Registry -Root HKEY_USERS
+}
+
+## Customize the prompt
+function prompt {
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal] $identity
+    $adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
+
+    $prefix = $(if (Test-Path variable:/PSDebugContext) { '[DBG]: ' }
+                elseif ($principal.IsInRole($adminRole)) { "PS | [ADMIN] - " } 
+                else { '' })
+    $body = '[' + $(Get-Location)
+    $suffix = $(if ($NestedPromptLevel -ge 1) { '>>' }) + ']>_ '
+    $prefix + $body + $suffix
+	Write-Host ""
+}
+
+## Create $PSStyle if running on a version older than 7.2
+## - Add other ANSI color definitions as needed
+
+if ($PSVersionTable.PSVersion.ToString() -lt '7.2.0') {
+    # define escape char since "`e" may not be supported
+    $esc = [char]0x1b
+    $PSStyle = [pscustomobject]@{
+        Foreground = @{
+            Magenta = "${esc}[35m"
+            BrightYellow = "${esc}[93m"
+        }
+        Background = @{
+            BrightBlack = "${esc}[100m"
+        }
+    }
+}
+
+## Set PSReadLine options and keybindings
+$PSROptions = @{
+    ContinuationPrompt = '  '
+    Colors             = @{
+        Operator         = $PSStyle.Foreground.Magenta
+        Parameter        = $PSStyle.Foreground.Magenta
+        Selection        = $PSStyle.Background.BrightBlack
+        InLinePrediction = $PSStyle.Foreground.BrightYellow + $PSStyle.Background.BrightBlack
+    }
+}
+Set-PSReadLineOption @PSROptions
+Set-PSReadLineKeyHandler -Chord 'Ctrl+f' -Function ForwardWord
+Set-PSReadLineKeyHandler -Chord 'Enter' -Function ValidateAndAcceptLine
+
+## Add argument completer for the dotnet CLI tool
+$scriptblock = {
+    param($wordToComplete, $commandAst, $cursorPosition)
+    dotnet complete --position $cursorPosition $commandAst.ToString() |
+        ForEach-Object {
+            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+        }
+}
+Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock $scriptblock
+
+## Function			Set-ExecutionPolicy
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+
+##function New-Greeting
+##	{
+##        $Today = $(Get-Date)
+##        Write-Host "   Day of Week  -"$Today.DayOfWeek " - Today's Date -"$Today.ToShortDateString() "- Current Time -"$Today.ToShortTimeString()
+##        Switch ($Today.dayofweek) 
+##		{
+##            Monday { Write-host "   Don't want to work today" }
+##            Friday { Write-host "   Almost the weekend" }
+##            Saturday { Write-host "   Everyone loves a Saturday ;-)" }
+##            Sunday { Write-host "   A good day to rest, or so I hear." }
+##            Default { Write-host "   Business as usual." }
+##        }
+##	}
+
+##New-Greeting
+
+function Get-SystemInfo {
+    $osInfo = Get-CimInstance Win32_OperatingSystem
+    $cpuInfo = Get-CimInstance Win32_Processor
+    $memoryInfo = Get-CimInstance Win32_PhysicalMemory
+
+    Write-Host "Sistema Operacional: $($osInfo.Caption) $($osInfo.Version)"
+    ##Write-Host "Nome do Computador: $($osInfo.CSName)"
+    Write-Host "Processador: $($cpuInfo.Name)"
+    
+    # Somar a capacidade total da memória física
+    $totalMemory = $memoryInfo | Measure-Object -Property Capacity -Sum
+    $totalMemoryGB = [math]::Round($totalMemory.Sum / 1GB, 2)
+    
+    Write-Host "Memória RAM Total: ${totalMemoryGB} GB"
+	Write-Host ""
+}
+
+Get-SystemInfo
+
+New-Alias -Name 'npp' -Value 'C:\Program Files\Notepad++\notepad++.exe' -Description 'Launch Notepad++'
 ```
