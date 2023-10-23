@@ -1,7 +1,7 @@
 ## Table of Contents
 
 - [Bashrc](#Bashrc)
-- [settings.json](#settings)
+- [Windows Terminal](#WT)
 - [Powershell](#Powershell)
 - [Disclaimer](#disclaimer)
 
@@ -33,8 +33,8 @@ alias npp='/mnt/c/Program\ Files/Notepad++/Notepad++.exe'
 ```
 
 
-## settings
-### for windows terminal
+## WT
+### settings.json for windows terminal
 
 ```json
 {
