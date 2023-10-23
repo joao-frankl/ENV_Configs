@@ -408,8 +408,8 @@ alias npp='/mnt/c/Program\ Files/Notepad++/Notepad++.exe'
 }
 ```
 
-##Powershell
-###Microsoft.PowerShekk_profile.ps1 settings for powershell
+## Powershell
+### Microsoft.PowerShell_profile.ps1 settings for $PROFILE powershell
 
  ```ps1
 ## Map PSDrives to other registry hives
