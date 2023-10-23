@@ -67,7 +67,16 @@ alias npp='/mnt/c/Program\ Files/Notepad++/Notepad++.exe'
                 "splitMode": "duplicate"
             },
             "keys": "alt+shift+d"
-        }
+        },
+		{
+			"command":
+			{
+				"action":"wt",
+				"commandline":"new-tab wsl.exe 'zap';split-pane wsl.exe 'disc'"
+			},
+			"keys":"alt+s",
+			"name":"chats"
+		}
     ],
     "alwaysShowNotificationIcon": true,
     "centerOnLaunch": true,
@@ -146,6 +155,16 @@ alias npp='/mnt/c/Program\ Files/Notepad++/Notepad++.exe'
                 "name": "SSH AD01",
                 "startingDirectory": "%USERPROFILE%",
                 "tabTitle": "AD01"
+            },
+            {
+                "bellStyle": "taskbar",
+                "commandline": "wt Ubuntu2204 ; split-pane -V -p wt Ubuntu2204 ",
+                "guid": "{9707be55-6a3a-45c1-a173-0dd48d5a29d4}",
+                "hidden": false,
+                "name": "Chats",
+                "startingDirectory": "~",
+                "tabTitle": "Chats"
+				
             }
         ]
     },
