@@ -1,7 +1,7 @@
 ## Table of Contents
 
 - [Bashrc](#Bashrc)
-- [settings.json](#settings.json)
+- [settings.json](#settings)
 - [Powershell](#Powershell)
 - [Disclaimer](#disclaimer)
 
