@@ -173,11 +173,6 @@ alias npp='/mnt/c/Program\ Files/Notepad++/Notepad++.exe'
 ### Microsoft.PowerShell_profile.ps1 settings for $PROFILE powershell
 
  ```ps1
-## Map PSDrives to other registry hives
-if (!(Test-Path HKCR:)) {
-    $null = New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT
-    $null = New-PSDrive -Name HKU -PSProvider Registry -Root HKEY_USERS
-}
 
 ## Customize the prompt
 function prompt {
@@ -188,90 +183,36 @@ function prompt {
     $prefix = $(if (Test-Path variable:/PSDebugContext) { '[DBG]: ' }
                 elseif ($principal.IsInRole($adminRole)) { "PS | [ADMIN] - " } 
                 else { '' })
-    $body = '[' + $(Get-Location)
-    $suffix = $(if ($NestedPromptLevel -ge 1) { '>>' }) + ']>_ '
-    $prefix + $body + $suffix
+    $body = '[' + $(Get-Location) + ']'
+	Write-Host ""
+    $suffix = $(if ($NestedPromptLevel -ge 1) { '>>' }) + '>_ '
+    $prefix + $body + "`n"+ $suffix
 	Write-Host ""
 }
 
-## Create $PSStyle if running on a version older than 7.2
-## - Add other ANSI color definitions as needed
-
-if ($PSVersionTable.PSVersion.ToString() -lt '7.2.0') {
-    # define escape char since "`e" may not be supported
-    $esc = [char]0x1b
-    $PSStyle = [pscustomobject]@{
-        Foreground = @{
-            Magenta = "${esc}[35m"
-            BrightYellow = "${esc}[93m"
-        }
-        Background = @{
-            BrightBlack = "${esc}[100m"
-        }
-    }
-}
-
-## Set PSReadLine options and keybindings
-$PSROptions = @{
-    ContinuationPrompt = '  '
-    Colors             = @{
-        Operator         = $PSStyle.Foreground.Magenta
-        Parameter        = $PSStyle.Foreground.Magenta
-        Selection        = $PSStyle.Background.BrightBlack
-        InLinePrediction = $PSStyle.Foreground.BrightYellow + $PSStyle.Background.BrightBlack
-    }
-}
-Set-PSReadLineOption @PSROptions
-Set-PSReadLineKeyHandler -Chord 'Ctrl+f' -Function ForwardWord
-Set-PSReadLineKeyHandler -Chord 'Enter' -Function ValidateAndAcceptLine
-
-## Add argument completer for the dotnet CLI tool
-$scriptblock = {
-    param($wordToComplete, $commandAst, $cursorPosition)
-    dotnet complete --position $cursorPosition $commandAst.ToString() |
-        ForEach-Object {
-            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
-        }
-}
-Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock $scriptblock
 
 ## Function			Set-ExecutionPolicy
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force 
 
-##function New-Greeting
-##	{
-##        $Today = $(Get-Date)
-##        Write-Host "   Day of Week  -"$Today.DayOfWeek " - Today's Date -"$Today.ToShortDateString() "- Current Time -"$Today.ToShortTimeString()
-##        Switch ($Today.dayofweek) 
-##		{
-##            Monday { Write-host "   Don't want to work today" }
-##            Friday { Write-host "   Almost the weekend" }
-##            Saturday { Write-host "   Everyone loves a Saturday ;-)" }
-##            Sunday { Write-host "   A good day to rest, or so I hear." }
-##            Default { Write-host "   Business as usual." }
-##        }
-##	}
-
-##New-Greeting
-
-function Get-SystemInfo {
-    $osInfo = Get-CimInstance Win32_OperatingSystem
-    $cpuInfo = Get-CimInstance Win32_Processor
-    $memoryInfo = Get-CimInstance Win32_PhysicalMemory
-
-    Write-Host "Sistema Operacional: $($osInfo.Caption) $($osInfo.Version)"
-    ##Write-Host "Nome do Computador: $($osInfo.CSName)"
-    Write-Host "Processador: $($cpuInfo.Name)"
-    
-    # Somar a capacidade total da memória física
-    $totalMemory = $memoryInfo | Measure-Object -Property Capacity -Sum
-    $totalMemoryGB = [math]::Round($totalMemory.Sum / 1GB, 2)
-    
-    Write-Host "Memória RAM Total: ${totalMemoryGB} GB"
-	Write-Host ""
-}
-
-Get-SystemInfo
+##function Get-SystemInfo {
+##    $osInfo = Get-CimInstance Win32_OperatingSystem
+##    $cpuInfo = Get-CimInstance Win32_Processor
+##    $memoryInfo = Get-CimInstance Win32_PhysicalMemory
+##
+##    Write-Host "Sistema Operacional: $($osInfo.Caption) $($osInfo.Version)"
+##    ##Write-Host "Nome do Computador: $($osInfo.CSName)"
+##    Write-Host "Processador: $($cpuInfo.Name)"
+##    
+##    # Somar a capacidade total da memória física
+##    $totalMemory = $memoryInfo | Measure-Object -Property Capacity -Sum
+##    $totalMemoryGB = [math]::Round($totalMemory.Sum / 1GB, 2)
+##    
+##    Write-Host "Memória RAM Total: ${totalMemoryGB} GB"
+##	Write-Host ""
+##}
+##
+##Get-SystemInfo
 
 New-Alias -Name 'npp' -Value 'C:\Program Files\Notepad++\notepad++.exe' -Description 'Launch Notepad++'
+# New-Alias -Name 'scriptyes' -Value 'Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force'
 ```
